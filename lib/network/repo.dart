@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:movie_app/models/movie/movie.dart';
 
-
 import 'api_result.dart';
 import 'api_service.dart';
 import 'network_exceptions.dart';
@@ -25,8 +24,8 @@ class MovieRepository {
 
   Future<ApiResult<List<Results>>> fetchMoviesByGenre(int genreId) async {
     try {
-      final response =
-          await _apiService.get('/discover/movie', params: {'with_genres': genreId});
+      final response = await _apiService
+          .get('/discover/movie', params: {'with_genres': genreId});
       final movies = (response.data['results'] as List)
           .map((m) => Results.fromJson(m))
           .toList();
@@ -39,8 +38,9 @@ class MovieRepository {
   Future<ApiResult<List<Genre>>> fetchGenres() async {
     try {
       final response = await _apiService.get('/genre/movie/list');
-      final genres =
-          (response.data['genres'] as List).map((g) => Genre.fromJson(g)).toList();
+      final genres = (response.data['genres'] as List)
+          .map((g) => Genre.fromJson(g))
+          .toList();
       return ApiResult.success(genres);
     } catch (error) {
       return ApiResult.failure(NetworkExceptions.getDioException(error));
@@ -50,8 +50,9 @@ class MovieRepository {
   Future<ApiResult<List<Person>>> fetchTrendingPersons() async {
     try {
       final response = await _apiService.get('/trending/person/week');
-      final persons =
-          (response.data['results'] as List).map((p) => Person.fromJson(p)).toList();
+      final persons = (response.data['results'] as List)
+          .map((p) => Person.fromJson(p))
+          .toList();
       return ApiResult.success(persons);
     } catch (error) {
       return ApiResult.failure(NetworkExceptions.getDioException(error));
@@ -69,14 +70,23 @@ class MovieRepository {
       final castListResult = await fetchCastList(movieId);
 
       // Check if any of the ApiResult calls failed
-      if (youtubeIdResult is Failure || imagePathResult is Failure || castListResult is Failure) {
-        return ApiResult.failure(NetworkExceptions.getDioException("Failed to fetch movie details"));
+      if (youtubeIdResult is Failure ||
+          imagePathResult is Failure ||
+          castListResult is Failure) {
+        return ApiResult.failure(
+            NetworkExceptions.getDioException("Failed to fetch movie details"));
       }
 
-      // If everything is successful, assign the data
-      movie.results![0].trailerId = (youtubeIdResult as Success<String>).data;
-      movie.results![0].posterPath = (imagePathResult as Success<String>).data;
-      movie.results![0].genreIds = (castListResult as Success<List<int>>).data;
+      if (movie.results != null && movie.results!.isNotEmpty) {
+        movie.results![0].trailerId =
+            (youtubeIdResult as Success<YoutubeVideo>).data.key;
+        movie.results![0].posterPath =
+            (imagePathResult as Success<MovieImage>).data.filePath;
+        movie.results![0].genreIds = (castListResult as Success<List<Cast>>)
+            .data
+            .map((cast) => cast.id)
+            .toList();
+      }
 
       return ApiResult.success(movie);
     } catch (error) {
@@ -84,40 +94,44 @@ class MovieRepository {
     }
   }
 
-  Future<ApiResult<String>> fetchYoutubeId(int movieId) async {
+  Future<ApiResult<YoutubeVideo>> fetchYoutubeId(int movieId) async {
     try {
       final response = await _apiService.get('/movie/$movieId/videos');
-      final youtubeId = response.data['results'].isNotEmpty
-          ? response.data['results'][0]['key']
-          : '';
-      return ApiResult.success(youtubeId);
+      if (response.data['results'].isNotEmpty) {
+        return ApiResult.success(
+            YoutubeVideo.fromJson(response.data['results'][0]));
+      } else {
+        return ApiResult.failure(
+            NetworkExceptions.getDioException("No video found"));
+      }
     } catch (error) {
       return ApiResult.failure(NetworkExceptions.getDioException(error));
     }
   }
 
-  Future<ApiResult<String>> fetchMovieImage(int movieId) async {
+  Future<ApiResult<MovieImage>> fetchMovieImage(int movieId) async {
     try {
       final response = await _apiService.get('/movie/$movieId/images');
-      final imagePath = response.data['posters'].isNotEmpty
-          ? response.data['posters'][0]['file_path']
-          : '';
-      return ApiResult.success(imagePath);
+      if (response.data['posters'].isNotEmpty) {
+        return ApiResult.success(
+            MovieImage.fromJson(response.data['posters'][0]));
+      } else {
+        return ApiResult.failure(
+            NetworkExceptions.getDioException("No image found"));
+      }
     } catch (error) {
       return ApiResult.failure(NetworkExceptions.getDioException(error));
     }
   }
 
-  Future<ApiResult<List<int>>> fetchCastList(int movieId) async {
+  Future<ApiResult<List<Cast>>> fetchCastList(int movieId) async {
     try {
       final response = await _apiService.get('/movie/$movieId/credits');
-      final castList = (response.data['cast'] as List)
-          .map((c) => c['id'] as int)
-          .toList();
+      final castList =
+          (response.data['cast'] as List).map((c) => Cast.fromJson(c)).toList();
       return ApiResult.success(castList);
     } catch (error) {
       return ApiResult.failure(NetworkExceptions.getDioException(error));
     }
   }
 }
-

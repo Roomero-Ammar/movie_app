@@ -176,3 +176,69 @@ class Results {
     };
   }
 }
+
+// new 3 models
+
+class YoutubeVideo {
+  final String key;
+  final String name;
+  
+  YoutubeVideo({required this.key, required this.name});
+  
+  factory YoutubeVideo.fromJson(Map<String, dynamic> json) {
+    return YoutubeVideo(
+      key: json['key'],
+      name: json['name'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'key': key,
+      'name': name,
+    };
+  }
+}
+//
+class MovieImage {
+  final String filePath;
+
+  MovieImage({required this.filePath});
+
+  factory MovieImage.fromJson(Map<String, dynamic> json) {
+    return MovieImage(
+      filePath: json['file_path'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'file_path': filePath,
+    };
+  }
+}
+//
+class Cast {
+  final int id;
+  final String name;
+  final String profilePath;
+
+  Cast({required this.id, required this.name, required this.profilePath});
+
+  factory Cast.fromJson(Map<String, dynamic> json) {
+    return Cast(
+      id: json['id'],
+      name: json['name'],
+      profilePath: json['profile_path'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'profile_path': profilePath,
+    };
+  }
+}
+
