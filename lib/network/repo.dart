@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:movie_app/models/movie/movie.dart';
 
 import 'api_result.dart';
