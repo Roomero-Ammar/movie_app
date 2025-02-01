@@ -146,18 +146,21 @@ class Genre {
 class Person {
   int? id;
   String? name;
+  String? profilePath; // Added profilePath
 
-  Person({this.id, this.name});
+  Person({this.id, this.name, this.profilePath});
 
   Person.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    profilePath = json['profile_path']; // Fetch profile image
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
+      'profile_path': profilePath,
     };
   }
 }
