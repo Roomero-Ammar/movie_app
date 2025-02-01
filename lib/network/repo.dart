@@ -10,11 +10,11 @@ class MovieRepository {
 
   MovieRepository(this._apiService);
 
-  Future<ApiResult<List<Results>>> fetchNowPlayingMovies() async {
+  Future<ApiResult<List<Movie>>> fetchNowPlayingMovies() async {
     try {
       final response = await _apiService.get('/movie/now_playing');
       final movies = (response.data['results'] as List)
-          .map((m) => Results.fromJson(m))
+          .map((m) => Movie.fromJson(m))
           .toList();
       return ApiResult.success(movies);
     } catch (error) {
@@ -22,12 +22,12 @@ class MovieRepository {
     }
   }
 
-  Future<ApiResult<List<Results>>> fetchMoviesByGenre(int genreId) async {
+  Future<ApiResult<List<Movie>>> fetchMoviesByGenre(int genreId) async {
     try {
       final response = await _apiService
           .get('/discover/movie', params: {'with_genres': genreId});
       final movies = (response.data['results'] as List)
-          .map((m) => Results.fromJson(m))
+          .map((m) => Movie.fromJson(m))
           .toList();
       return ApiResult.success(movies);
     } catch (error) {
@@ -59,41 +59,35 @@ class MovieRepository {
     }
   }
 
-  Future<ApiResult<Movie>> fetchMovieDetail(int movieId) async {
-    try {
-      final response = await _apiService.get('/movie/$movieId');
-      final movie = Movie.fromJson(response.data);
+Future<ApiResult<Movie>> fetchMovieDetail(int movieId) async {
+  try {
+    // جلب تفاصيل الفيلم
+    final response = await _apiService.get('/movie/$movieId');
+    final movie = Movie.fromJson(response.data);
 
-      // Fetch additional details
-      final youtubeIdResult = await fetchYoutubeId(movieId);
-      final imagePathResult = await fetchMovieImage(movieId);
-      final castListResult = await fetchCastList(movieId);
+    // جلب التفاصيل الإضافية
+    final youtubeIdResult = await fetchYoutubeId(movieId);
+    final imagePathResult = await fetchMovieImage(movieId);
+    final castListResult = await fetchCastList(movieId);
 
-      // Check if any of the ApiResult calls failed
-      if (youtubeIdResult is Failure ||
-          imagePathResult is Failure ||
-          castListResult is Failure) {
-        return ApiResult.failure(
-            NetworkExceptions.getDioException("Failed to fetch movie details"));
-      }
-
-      if (movie.results != null && movie.results!.isNotEmpty) {
-        movie.results![0].trailerId =
-            (youtubeIdResult as Success<YoutubeVideo>).data.key;
-        movie.results![0].posterPath =
-            (imagePathResult as Success<MovieImage>).data.filePath;
-        movie.results![0].genreIds = (castListResult as Success<List<Cast>>)
-            .data
-            .map((cast) => cast.id)
-            .toList();
-      }
-
-      return ApiResult.success(movie);
-    } catch (error) {
-      return ApiResult.failure(NetworkExceptions.getDioException(error));
+    // التحقق من أي من نتائج API لم تنجح
+    if (youtubeIdResult is Failure ||
+        imagePathResult is Failure ||
+        castListResult is Failure) {
+      return ApiResult.failure(
+          NetworkExceptions.getDioException("فشل في جلب تفاصيل الفيلم"));
     }
-  }
 
+    // إذا كانت التفاصيل موجودة، قم بتحديث خصائص الفيلم
+    movie.trailer = (youtubeIdResult as Success<YoutubeVideo>).data;
+    movie.movieImage = (imagePathResult as Success<MovieImage>).data;
+    movie.cast = (castListResult as Success<List<Cast>>).data;
+
+    return ApiResult.success(movie);
+  } catch (e) {
+    return ApiResult.failure(NetworkExceptions.getDioException(e));
+  }
+}
   Future<ApiResult<YoutubeVideo>> fetchYoutubeId(int movieId) async {
     try {
       final response = await _apiService.get('/movie/$movieId/videos');

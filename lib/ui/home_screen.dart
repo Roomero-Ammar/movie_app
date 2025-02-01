@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final MovieRepository _movieRepository = MovieRepository(ApiService());
-  late Future<ApiResult<List<Results>>> _nowPlayingMovies;
+  late Future<ApiResult<List<Movie>>> _nowPlayingMovies;
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Now Playing Movies'),
       ),
-      body: FutureBuilder<ApiResult<List<Results>>>(
+      body: FutureBuilder<ApiResult<List<Movie>>>(
         future: _nowPlayingMovies,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

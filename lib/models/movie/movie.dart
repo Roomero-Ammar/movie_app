@@ -1,46 +1,109 @@
 class Movie {
   Dates? dates;
   int? page;
-  List<Results>? results;
   int? totalPages;
   int? totalResults;
+
+  // خصائص الفيلم الأساسية
+  bool? adult;
+  String? backdropPath;
+ // List<Genre>? genres;
+  int? id;
+  String? originalLanguage;
+  String? originalTitle;
+  String? overview;
+  double? popularity;
+  String? posterPath;
+  String? releaseDate;
+  String? title;
+  bool? video;
+  double? voteAverage;
+  int? voteCount;
+
+  // خصائص إضافية
+  YoutubeVideo? trailer; // معرف الفيديو من اليوتيوب
+  MovieImage? movieImage; // صورة الفيلم
+  List<Cast>? cast; // قائمة الممثلين
 
   Movie({
     this.dates,
     this.page,
-    this.results,
     this.totalPages,
     this.totalResults,
+    this.adult,
+    this.backdropPath,
+   // this.genres,
+    this.id,
+    this.originalLanguage,
+    this.originalTitle,
+    this.overview,
+    this.popularity,
+    this.posterPath,
+    this.releaseDate,
+    this.title,
+    this.video,
+    this.voteAverage,
+    this.voteCount,
+    this.trailer,
+    this.movieImage,
+    this.cast,
   });
 
-  Movie.fromJson(Map<String, dynamic> json) {
-    dates = json['dates'] != null ? Dates.fromJson(json['dates']) : null;
-    page = json['page'];
-    if (json['results'] != null) {
-      results = <Results>[];
-      json['results'].forEach((v) {
-        results!.add(Results.fromJson(v));
-      });
-    }
-    totalPages = json['total_pages'];
-    totalResults = json['total_results'];
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    return Movie(
+      dates: json['dates'] != null ? Dates.fromJson(json['dates']) : null,
+      page: json['page'],
+      totalPages: json['total_pages'],
+      totalResults: json['total_results'],
+      adult: json['adult'],
+      backdropPath: json['backdrop_path'],
+    //  genres: (json['genres'] as List?)?.map((g) => Genre.fromJson(g)).toList(),
+      id: json['id'],
+      originalLanguage: json['original_language'],
+      originalTitle: json['original_title'],
+      overview: json['overview'],
+      popularity: json['popularity'],
+      posterPath: json['poster_path'],
+      releaseDate: json['release_date'],
+      title: json['title'],
+      video: json['video'],
+      voteAverage: json['vote_average'],
+      voteCount: json['vote_count'],
+      trailer: json['trailer'] != null ? YoutubeVideo.fromJson(json['trailer']) : null,
+      movieImage: json['movie_image'] != null ? MovieImage.fromJson(json['movie_image']) : null,
+      cast: (json['cast'] as List?)?.map((c) => Cast.fromJson(c)).toList(),
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    if (this.dates != null) {
-      data['dates'] = this.dates!.toJson();
-    }
-    data['page'] = this.page;
-    if (this.results != null) {
-      data['results'] = this.results!.map((v) => v.toJson()).toList();
-    }
-    data['total_pages'] = this.totalPages;
-    data['total_results'] = this.totalResults;
-    return data;
+    return {
+      'dates': dates?.toJson(),
+      'page': page,
+      'total_pages': totalPages,
+      'total_results': totalResults,
+      'adult': adult,
+      'backdrop_path': backdropPath,
+     // 'genres': genres?.map((g) => g.toJson()).toList(),
+      'id': id,
+      'original_language': originalLanguage,
+      'original_title': originalTitle,
+      'overview': overview,
+      'popularity': popularity,
+      'poster_path': posterPath,
+      'release_date': releaseDate,
+      'title': title,
+      'video': video,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
+      'trailer': trailer?.toJson(),
+      'movie_image': movieImage?.toJson(),
+      'cast': cast?.map((c) => c.toJson()).toList(),
+    };
   }
 }
 
+
+//
 class Dates {
   String? maximum;
   String? minimum;
