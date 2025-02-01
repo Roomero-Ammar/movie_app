@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:movie_app/models/movie/movie.dart';
-import 'package:movie_app/network/api_result.dart';
 import 'package:movie_app/network/network_exceptions.dart';
 import 'package:movie_app/network/repo.dart';
 
