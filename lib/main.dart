@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/core/utils/app_router.dart';
+import 'package:movie_app/core/utils/app_route.dart';
 
 void main() {
   runApp(MovieApp(appRouter: AppRouter()));

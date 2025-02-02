@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:movie_app/core/utils/app_router.dart';
+import 'package:movie_app/core/utils/app_route.dart';
 
 import 'package:movie_app/main.dart';
 
