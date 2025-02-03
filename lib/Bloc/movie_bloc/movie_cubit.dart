@@ -11,8 +11,13 @@ part 'movie_state.dart';
 class MovieCubit extends Cubit<MovieState> {
   final MovieRepository _movieRepository;
 
-  MovieCubit(this._movieRepository) : super(MovieInitial());
+  // MovieCubit(this._movieRepository) : super(MovieInitial());
 
+  //
+ MovieCubit(this._movieRepository) : super(MovieInitial()) {
+    fetchNowPlayingMovies(); // Automatically fetch now playing movies
+  }
+  //
   Future<void> fetchNowPlayingMovies() async {
     emit(MovieLoading());
     final result = await _movieRepository.fetchNowPlayingMovies();

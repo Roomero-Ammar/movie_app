@@ -20,7 +20,7 @@ class MovieDetailScreen extends StatelessWidget {
             return Column(
               children: [
                 Image.network(
-                  'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                  'https://image.tmdb.org/t/p/w500${movie.backdropPath ?? 'No Image Available'}',
                   height: 300,
                 ),
                 Padding(

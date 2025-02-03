@@ -5,6 +5,7 @@ import 'package:movie_app/Bloc/movie_bloc/movie_cubit.dart';
 import 'package:movie_app/Bloc/person_bloc/person_cubit.dart';
 import 'package:movie_app/Bloc/genre_bloc/genre_cubit.dart';
 import 'package:movie_app/constants/strings.dart';
+import 'package:movie_app/network/service_locator.dart';
 import 'package:movie_app/ui/home_screen.dart';
 import 'package:movie_app/ui/movie_details_screen.dart';
 import 'package:movie_app/network/api_service.dart';
@@ -23,7 +24,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
             providers: [
-              BlocProvider(create: (context) => MovieCubit(movieRepository)..fetchNowPlayingMovies()),
+              // BlocProvider(create: (context) => MovieCubit(movieRepository)..fetchNowPlayingMovies()),  // without using getIt
+
+              BlocProvider(create: (context) => getIt<MovieCubit>()),
               BlocProvider(create: (context) => PersonCubit(movieRepository)..fetchTrendingPersons()),
               BlocProvider(create: (context) => GenreCubit(movieRepository)..fetchGenres()),
             ],
