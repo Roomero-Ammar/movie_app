@@ -29,7 +29,7 @@ class AppRouter {
 
               BlocProvider(create: (context) => getIt<MovieCubit>()),
               BlocProvider(create: (context) => PersonCubit(movieRepository)..fetchTrendingPersons()),
-              BlocProvider(create: (context) => GenreCubit(movieRepository)..fetchGenres()),
+             BlocProvider(create: (context) => GenreCubit(movieRepository)..fetchGenres()),
             ],
             child: const HomeScreen(),
           ),

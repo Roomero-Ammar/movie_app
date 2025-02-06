@@ -20,9 +20,10 @@ void setupLocator() {
   getIt.registerLazySingleton<MovieRepository>(() => MovieRepository(getIt<ApiService>()));
 
   // 4️⃣ تسجيل Cubits (كل Cubit يأخذ الـ Repository الخاص به)
-  getIt.registerLazySingleton<MovieCubit>(() => MovieCubit(getIt<MovieRepository>()));
-  getIt.registerLazySingleton<GenreCubit>(() => GenreCubit(getIt<MovieRepository>()));
-  getIt.registerLazySingleton<PersonCubit>(() => PersonCubit(getIt<MovieRepository>()));
+  getIt.registerFactory<MovieCubit>(() => MovieCubit(getIt<MovieRepository>()));
+  
+  getIt.registerFactory<GenreCubit>(() => GenreCubit(getIt<MovieRepository>()));
+  getIt.registerFactory<PersonCubit>(() => PersonCubit(getIt<MovieRepository>()));
 
 // Todo : if you will use it in single screen
 
