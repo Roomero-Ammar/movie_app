@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/Bloc/MovieDetails_bloc/movie_details_cubit.dart';
+import 'package:movie_app/constants/app_fonts.dart';
 import 'package:movie_app/models/movie/movie.dart';
-import 'package:movie_app/network/repo.dart';
 import 'package:movie_app/network/service_locator.dart';
 import 'package:url_launcher/url_launcher.dart'; // Add this package for launching URLs
 
@@ -26,33 +26,40 @@ class MovieDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.network(
-                      'https://image.tmdb.org/t/p/w500${movie.backdropPath ?? 'No Image Available'}',
-                      height: 300,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: ClipRRect(
+                                         borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0),bottom: Radius.circular(20.0)),
+                      
+                        child: Image.network(
+                          'https://image.tmdb.org/t/p/w500${movie.backdropPath ?? 'No Image Available'}',
+                          height: 300,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         movie.title ?? "No Title", // Default Title if missing
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        style: AppFonts.textTheme.labelMedium,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(movie.overview ??
-                          "No Description"), // Default Description if missing
+                          "No Description" , style: AppFonts.textTheme.titleSmall,), // Default Description if missing
                     ),
                     const Divider(),
                     // Show cast information
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Cast:',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                      child: Center(
+                        child: Text(
+                          'Cast',
+                          style: AppFonts.textTheme.labelMedium
+                        ),
                       ),
                     ),
                     // Cast list with fallback for empty list
@@ -78,7 +85,7 @@ class MovieDetailScreen extends StatelessWidget {
                                   const SizedBox(height: 8),
                                   Text(
                                     cast.name, // Default Name if missing
-                                    style: const TextStyle(fontSize: 14),
+                                    style: AppFonts.textTheme.displaySmall,
                                   ),
                                 ],
                               ),
@@ -99,7 +106,7 @@ class MovieDetailScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           onPressed: () => _launchURL(movie.trailer!.key),
-                          child: const Text('Watch Trailer'),
+                          child:  Text('Watch Trailer', style: AppFonts.textTheme.titleSmall,),
                         ),
                       )
                     else

@@ -23,7 +23,7 @@ class AppFonts {
     labelMedium: GoogleFonts.roboto(
       textStyle: TextStyle(
         fontSize: 20,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.bold,
         color: const Color(
           0xff1D1D21,
         ),
@@ -35,5 +35,19 @@ class AppFonts {
         fontWeight: FontWeight.w400,
       ),
     ),
+    titleSmall: GoogleFonts.roboto(
+      textStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+ 
+    displaySmall: GoogleFonts.roboto(
+      textStyle: TextStyle(
+        fontSize: 11.5,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+
   );
 }
