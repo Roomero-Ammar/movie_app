@@ -12,15 +12,20 @@ class MovieDetailCubit extends Cubit<MovieDetailState> {
   MovieDetailCubit(this._movieRepository) : super(MovieDetailInitial());
 
   Future<void> fetchMovieDetail(int movieId) async {
+    if (isClosed) return;  // تأكد من أن الـ Cubit لم يتم غلقه بعد
+
     emit(MovieDetailLoading());
+    
     final result = await _movieRepository.fetchMovieDetail(movieId);
+
+    if (isClosed) return;  // تأكد من أن الـ Cubit لم يتم غلقه بعد
 
     result.when(
       success: (movie) {
-        emit(MovieDetailLoaded(movie));
+        if (!isClosed) emit(MovieDetailLoaded(movie));  // تأكد من عدم غلق الـ Cubit قبل التحديث
       },
       failure: (error) {
-        emit(MovieDetailError(NetworkExceptions.getDioException(error).toString()));
+        if (!isClosed) emit(MovieDetailError(NetworkExceptions.getDioException(error).toString()));
       },
     );
   }
