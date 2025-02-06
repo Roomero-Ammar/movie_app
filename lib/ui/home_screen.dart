@@ -4,6 +4,7 @@ import 'package:movie_app/Bloc/movie_bloc/movie_cubit.dart';
 import 'package:movie_app/Bloc/person_bloc/person_cubit.dart';
 import 'package:movie_app/Bloc/genre_bloc/genre_cubit.dart';
 import 'package:movie_app/constants/strings.dart';
+import 'package:movie_app/ui/genre_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -29,35 +30,56 @@ class HomeScreen extends StatelessWidget {
   }
 
   /// 📌 Fetch & Display Genres (Action, Comedy, Drama...)
-  Widget _buildGenresSection() {
-    return BlocBuilder<GenreCubit, GenreState>(
-      builder: (context, state) {
-        if (state is GenreLoading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is GenreLoaded) {
-          final genres = state.genres;
-          return SizedBox(
-            height: 50,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: genres.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+ Widget _buildGenresSection() {
+  return BlocBuilder<GenreCubit, GenreState>(
+    builder: (context, state) {
+      if (state is GenreLoading) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (state is GenreLoaded) {
+        final genres = state.genres;
+        return SizedBox(
+          height: 50,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: genres.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+  context,
+  moviesByGenreScreen,
+  arguments: {
+    'genreId': genres[index].id ?? 0, // Use a default value if necessary
+    'genreName': genres[index].name ?? 'Unknown',
+  },
+);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => MoviesByGenreScreen(
+                    //       categoryInfo:  ,// تمرير الـ genreId و الاسم
+                         // genreName: genres[index].name ?? 'Unknown', // تمرير اسم النوع
+                    //     ),
+
+                    //   ),
+                    // );
+                  },
                   child: Chip(
-                    label: Text(genres[index].name ?? 'Unknown')
-,
+                    label: Text(genres[index].name ?? 'Unknown'),
                     backgroundColor: Colors.blueGrey.shade200,
                   ),
-                );
-              },
-            ),
-          );
-        }
-        return const Center(child: Text('Failed to load genres.'));
-      },
-    );
-  }
+                ),
+              );
+            },
+          ),
+        );
+      }
+      return const Center(child: Text('Failed to load genres.'));
+    },
+  );
+}
 
   /// 🎬 Fetch & Display Now Playing Movies
   Widget _buildNowPlayingMovies() {
@@ -127,7 +149,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// ⭐ Fetch & Display Trending People (Actors, Directors)
+  /// ⭐️ Fetch & Display Trending People (Actors, Directors)
  Widget _buildTrendingPeople() {
   return BlocBuilder<PersonCubit, PersonState>(
     builder: (context, state) {
@@ -173,8 +195,7 @@ class HomeScreen extends StatelessWidget {
     ),
   ),
 );
-
-      }
+ }
       return const Center(child: Text('Failed to load people.'));
     },
   );

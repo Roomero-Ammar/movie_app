@@ -6,6 +6,7 @@ import 'package:movie_app/Bloc/person_bloc/person_cubit.dart';
 import 'package:movie_app/Bloc/genre_bloc/genre_cubit.dart';
 import 'package:movie_app/constants/strings.dart';
 import 'package:movie_app/network/service_locator.dart';
+import 'package:movie_app/ui/genre_screen.dart';
 import 'package:movie_app/ui/home_screen.dart';
 import 'package:movie_app/ui/movie_details_screen.dart';
 import 'package:movie_app/network/api_service.dart';
@@ -39,6 +40,16 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => MovieDetailScreen(movieId: movieId),
         );
+
+         case moviesByGenreScreen:
+  final arguments = settings.arguments as Map<String, dynamic>;
+  final genreId = arguments['genreId'] as int;
+  final genreName = arguments['genreName'] as String;
+  return MaterialPageRoute(
+    builder: (_) => MoviesByGenreScreen(
+      categoryInfo: (genreId: genreId, genreName: genreName),
+    ),
+  );
 
       default:
         return null;
