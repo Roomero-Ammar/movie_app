@@ -4,6 +4,8 @@ import 'package:movie_app/Bloc/MovieDetails_bloc/movie_details_cubit.dart';
 import 'package:movie_app/models/movie/movie.dart';
 import 'package:movie_app/network/repo.dart';
 import 'package:movie_app/network/service_locator.dart';
+import 'package:url_launcher/url_launcher.dart'; // Add this package for launching URLs
+
 class MovieDetailScreen extends StatelessWidget {
   final int movieId;
   const MovieDetailScreen({super.key, required this.movieId});
@@ -33,17 +35,18 @@ class MovieDetailScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        movie.title ?? "No Title",
+                        movie.title ?? "No Title", // Default Title if missing
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(movie.overview ?? "No Description"),
+                      child: Text(movie.overview ??
+                          "No Description"), // Default Description if missing
                     ),
                     const Divider(),
-                    // عرض الممثلين
+                    // Show cast information
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
@@ -52,7 +55,7 @@ class MovieDetailScreen extends StatelessWidget {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    // هنا سيتم عرض الممثلين
+                    // Cast list with fallback for empty list
                     if (movie.cast != null && movie.cast!.isNotEmpty)
                       SizedBox(
                         height: 150,
@@ -62,18 +65,19 @@ class MovieDetailScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final cast = movie.cast![index];
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Column(
                                 children: [
                                   CircleAvatar(
                                     radius: 40,
                                     backgroundImage: NetworkImage(
-                                      'https://image.tmdb.org/t/p/w500${cast.profilePath ?? 'default-profile.jpg'}',
+                                      'https://image.tmdb.org/t/p/w500${cast.profilePath.isNotEmpty ? cast.profilePath : 'default-profile.jpg'}',
                                     ),
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    cast.name ?? 'No Name',
+                                    cast.name, // Default Name if missing
                                     style: const TextStyle(fontSize: 14),
                                   ),
                                 ],
@@ -85,7 +89,24 @@ class MovieDetailScreen extends StatelessWidget {
                     else
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text('No cast available'),
+                        child: Text(
+                            'No cast available'), // Message if no cast available
+                      ),
+                    const Divider(),
+                    // Display trailer if available
+                    if (movie.trailer != null && movie.trailer!.key.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () => _launchURL(movie.trailer!.key),
+                          child: const Text('Watch Trailer'),
+                        ),
+                      )
+                    else
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                            'No trailer available'), // Message if no trailer available
                       ),
                   ],
                 ),
@@ -98,5 +119,14 @@ class MovieDetailScreen extends StatelessWidget {
       ),
     );
   }
-}
 
+  // Function to launch the video URL
+  Future<void> _launchURL(String videoKey) async {
+    final url = Uri.parse('https://www.youtube.com/watch?v=$videoKey');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+}

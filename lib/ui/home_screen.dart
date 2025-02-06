@@ -137,6 +137,32 @@ class HomeScreen extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
+                      Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                            child: Text(
+                              'Release: ${movie.releaseDate?.substring(0, 4) ?? 'Unknown'}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.star, color: Colors.yellow, size: 16),
+                                const SizedBox(width: 4),
+                                Text(
+                                  movie.voteAverage?.toStringAsFixed(1) ?? 'N/A',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                     ],
                   ),
                 ),
