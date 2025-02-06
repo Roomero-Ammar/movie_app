@@ -18,7 +18,7 @@ class MoviesByGenreScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             categoryInfo.genreName,
-            style: const TextStyle(color: Colors.white),
+           // style: const TextStyle(color: Colors.white),
           ),
         //  backgroundColor: Colors.deepPurple,
         ),
