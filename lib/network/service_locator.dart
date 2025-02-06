@@ -23,7 +23,13 @@ void setupLocator() {
   getIt.registerLazySingleton<MovieCubit>(() => MovieCubit(getIt<MovieRepository>()));
   getIt.registerLazySingleton<GenreCubit>(() => GenreCubit(getIt<MovieRepository>()));
   getIt.registerLazySingleton<PersonCubit>(() => PersonCubit(getIt<MovieRepository>()));
-  getIt.registerLazySingleton<MovieDetailCubit>(() => MovieDetailCubit(getIt<MovieRepository>()));
+
+// Todo : if you will use it in single screen
+
+  getIt.registerFactory<MovieDetailCubit>(() => MovieDetailCubit(getIt<MovieRepository>()));
+
+// Todo : if you will use it in app routes
+  //getIt.registerLazySingleton<MovieDetailCubit>(() => MovieDetailCubit(getIt<MovieRepository>()));
 }
 
 // 🔹 إعداد Dio مع Interceptors لتسجيل الطلبات والاستجابات

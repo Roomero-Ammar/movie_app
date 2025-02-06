@@ -37,10 +37,7 @@ class AppRouter {
       case movieDetailsScreen:
         final movieId = settings.arguments as int;
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => MovieDetailCubit(movieRepository)..fetchMovieDetail(movieId),
-            child: MovieDetailScreen(movieId: movieId),
-          ),
+          builder: (_) => MovieDetailScreen(movieId: movieId),
         );
 
       default:
