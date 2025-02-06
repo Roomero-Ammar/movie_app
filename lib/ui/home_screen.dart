@@ -3,18 +3,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/Bloc/movie_bloc/movie_cubit.dart';
 import 'package:movie_app/Bloc/person_bloc/person_cubit.dart';
 import 'package:movie_app/Bloc/genre_bloc/genre_cubit.dart';
+import 'package:movie_app/constants/app_fonts.dart';
 import 'package:movie_app/constants/strings.dart';
+import 'package:movie_app/core/utils/theme_provider.dart';
 import 'package:movie_app/ui/genre_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Movie Explorer'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(themeProvider.themeMode == ThemeMode.light ? Icons.dark_mode : Icons.light_mode),
+            onPressed: () {
+              themeProvider.toggleTheme(themeProvider.themeMode == ThemeMode.light);
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -47,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(
+                 Navigator.pushNamed(
   context,
   moviesByGenreScreen,
   arguments: {
@@ -67,8 +80,8 @@ class HomeScreen extends StatelessWidget {
                     // );
                   },
                   child: Chip(
-                    label: Text(genres[index].name ?? 'Unknown'),
-                    backgroundColor: Colors.blueGrey.shade200,
+                    label: Text(genres[index].name ?? 'Unknown', style:AppFonts.textTheme.labelSmall?.copyWith(fontSize: 11,fontWeight: FontWeight.w600),),
+                   // backgroundColor: Colors.white,
                   ),
                 ),
               );

@@ -20,7 +20,7 @@ class MoviesByGenreScreen extends StatelessWidget {
             categoryInfo.genreName,
             style: const TextStyle(color: Colors.white),
           ),
-          backgroundColor: Colors.deepPurple,
+        //  backgroundColor: Colors.deepPurple,
         ),
         body: BlocBuilder<MovieCubit, MovieState>(
           builder: (context, state) {

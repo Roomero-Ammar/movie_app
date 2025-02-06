@@ -24,9 +24,9 @@ class AppFonts {
       textStyle: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.bold,
-        color: const Color(
-          0xff1D1D21,
-        ),
+        // color: const Color(
+        //   0xff1D1D21,
+        // ),
       ),
     ),
     labelSmall: GoogleFonts.roboto(
