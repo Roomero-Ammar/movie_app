@@ -28,8 +28,11 @@ class AppRouter {
               // BlocProvider(create: (context) => MovieCubit(movieRepository)..fetchNowPlayingMovies()),  // without using getIt
 
               BlocProvider(create: (context) => getIt<MovieCubit>()),
-              BlocProvider(create: (context) => PersonCubit(movieRepository)..fetchTrendingPersons()),
-             BlocProvider(create: (context) => GenreCubit(movieRepository)..fetchGenres()),
+              BlocProvider(create: (context) => getIt<PersonCubit>()..fetchTrendingPersons()),
+              BlocProvider(create: (context) => getIt<GenreCubit>()..fetchGenres()),
+
+             // BlocProvider(create: (context) => PersonCubit(movieRepository)..fetchTrendingPersons()),
+             // BlocProvider(create: (context) => GenreCubit(movieRepository)..fetchGenres()),
             ],
             child: const HomeScreen(),
           ),
