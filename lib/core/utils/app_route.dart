@@ -28,11 +28,28 @@ class AppRouter {
               // BlocProvider(create: (context) => MovieCubit(movieRepository)..fetchNowPlayingMovies()),  // without using getIt
 
               BlocProvider(create: (context) => getIt<MovieCubit>()),
-              BlocProvider(create: (context) => getIt<PersonCubit>()..fetchTrendingPersons()),
-              BlocProvider(create: (context) => getIt<GenreCubit>()..fetchGenres()),
 
-             // BlocProvider(create: (context) => PersonCubit(movieRepository)..fetchTrendingPersons()),
-             // BlocProvider(create: (context) => GenreCubit(movieRepository)..fetchGenres()),
+              BlocProvider(
+                create: (context) {
+                  final personCubit = getIt<PersonCubit>();
+                  personCubit.fetchTrendingPersons();
+                  return personCubit;
+                },
+              ),
+
+              BlocProvider(
+                create: (context) {
+                  final genreCubit = getIt<GenreCubit>();
+                  genreCubit.fetchGenres();
+                  return genreCubit;
+                },
+              ),
+              // Todo : There is a problem with using getIt here
+              //  // BlocProvider(create: (context) => getIt<PersonCubit>()..fetchTrendingPersons()),
+              // // BlocProvider(create: (context) => getIt<GenreCubit>()..fetchGenres()),
+              // Todo : Without getIt
+              //   BlocProvider(create: (context) => PersonCubit(movieRepository)..fetchTrendingPersons()),
+              //   BlocProvider(create: (context) => GenreCubit(movieRepository)..fetchGenres()),
             ],
             child: const HomeScreen(),
           ),
@@ -44,15 +61,15 @@ class AppRouter {
           builder: (_) => MovieDetailScreen(movieId: movieId),
         );
 
-         case moviesByGenreScreen:
-  final arguments = settings.arguments as Map<String, dynamic>;
-  final genreId = arguments['genreId'] as int;
-  final genreName = arguments['genreName'] as String;
-  return MaterialPageRoute(
-    builder: (_) => MoviesByGenreScreen(
-      categoryInfo: (genreId: genreId, genreName: genreName),
-    ),
-  );
+      case moviesByGenreScreen:
+        final arguments = settings.arguments as Map<String, dynamic>;
+        final genreId = arguments['genreId'] as int;
+        final genreName = arguments['genreName'] as String;
+        return MaterialPageRoute(
+          builder: (_) => MoviesByGenreScreen(
+            categoryInfo: (genreId: genreId, genreName: genreName),
+          ),
+        );
 
       default:
         return null;
