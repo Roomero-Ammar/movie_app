@@ -9,7 +9,12 @@ part 'genre_state.dart';
 class GenreCubit extends Cubit<GenreState> {
   final MovieRepository _movieRepository;
 
-  GenreCubit(this._movieRepository) : super(GenreInitial());
+ // GenreCubit(this._movieRepository) : super(GenreInitial());
+  
+  GenreCubit(this._movieRepository) : super(GenreInitial()) {
+    // Fetch trending persons when the cubit is initialized
+    fetchGenres();
+  }
 
   Future<void> fetchGenres() async {
     emit(GenreLoading());

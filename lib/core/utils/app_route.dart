@@ -29,24 +29,28 @@ class AppRouter {
 
               BlocProvider(create: (context) => getIt<MovieCubit>()),
 
-              BlocProvider(
-                create: (context) {
-                  final personCubit = getIt<PersonCubit>();
-                  personCubit.fetchTrendingPersons();
-                  return personCubit;
-                },
-              ),
+              //Todo : If you don't want to add the fetch inside the cubit 
 
-              BlocProvider(
-                create: (context) {
-                  final genreCubit = getIt<GenreCubit>();
-                  genreCubit.fetchGenres();
-                  return genreCubit;
-                },
-              ),
+              // BlocProvider(
+              //   create: (context) {
+              //     final personCubit = getIt<PersonCubit>();
+              //     personCubit.fetchTrendingPersons();
+              //     return personCubit;
+              //   },
+              // ),
+
+              // BlocProvider(
+              //   create: (context) {
+              //     final genreCubit = getIt<GenreCubit>();
+              //     genreCubit.fetchGenres();
+              //     return genreCubit;
+              //   },
+              // ),
               // Todo : There is a problem with using getIt here
-              //  // BlocProvider(create: (context) => getIt<PersonCubit>()..fetchTrendingPersons()),
-              // // BlocProvider(create: (context) => getIt<GenreCubit>()..fetchGenres()),
+           //   تقوم باستدعاء fetchGenres() بعد إنشاء الـ Cubit /ولكن قبل أن يتم إرجاعه من دالة create./ هذا قد يؤدي إلى مشاكل، خاصة إذا كانت fetchGenres() عملية غير متزامنة /(bloc brovider كما هو الحال في جلب البيانات من API).
+           // //Todo : you can add the fetch inside the cubit constructor to avoid this problem 
+               BlocProvider(create: (context) => getIt<PersonCubit>()..fetchTrendingPersons()),
+               BlocProvider(create: (context) => getIt<GenreCubit>()..fetchGenres()),
               // Todo : Without getIt
               //   BlocProvider(create: (context) => PersonCubit(movieRepository)..fetchTrendingPersons()),
               //   BlocProvider(create: (context) => GenreCubit(movieRepository)..fetchGenres()),

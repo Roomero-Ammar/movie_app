@@ -9,7 +9,12 @@ part 'person_state.dart';
 class PersonCubit extends Cubit<PersonState> {
   final MovieRepository _movieRepository;
 
-  PersonCubit(this._movieRepository) : super(PersonInitial());
+//  PersonCubit(this._movieRepository) : super(PersonInitial());
+
+PersonCubit(this._movieRepository) : super(PersonInitial()) {
+    // Fetch trending persons when the cubit is initialized
+    fetchTrendingPersons();
+  }
 
   Future<void> fetchTrendingPersons() async {
     emit(PersonLoading());
