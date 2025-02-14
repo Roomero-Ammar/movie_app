@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/Bloc/movie_bloc/movie_cubit.dart';
 import 'package:movie_app/models/movie/movie.dart';
 import 'package:movie_app/network/service_locator.dart';
@@ -47,7 +48,7 @@ class MoviesByGenreScreen extends StatelessWidget {
                     },
                     child: Card(
                       elevation: 4,
-                      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                      margin:  EdgeInsets.symmetric(vertical: 8.0.w, horizontal: 4.0.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -60,23 +61,23 @@ class MoviesByGenreScreen extends StatelessWidget {
                                       fit: BoxFit.cover,
                                     ),
                                   )
-                                : const Icon(Icons.movie, size: 50, color: Colors.grey),
+                                :  Icon(Icons.movie, size: 50.sp, color: Colors.grey),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding:  EdgeInsets.all(8.0).w,
                             child: Text(
                               movie.title ?? 'No title',
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style:  TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                            padding:  EdgeInsets.symmetric(horizontal: 8.0.h, vertical: 4.0.w),
                             child: Text(
                               'Release: ${movie.releaseDate?.substring(0, 4) ?? 'Unknown'}',
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 color: Colors.grey[600],
                               ),
                             ),
@@ -85,12 +86,12 @@ class MoviesByGenreScreen extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Row(
                               children: [
-                                const Icon(Icons.star, color: Colors.yellow, size: 16),
-                                const SizedBox(width: 4),
+                                 Icon(Icons.star, color: Colors.yellow, size: 16),
+                                 SizedBox(width: 4.w),
                                 Text(
                                   movie.voteAverage?.toStringAsFixed(1) ?? 'N/A',
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     color: Colors.grey[700],
                                   ),
                                 ),

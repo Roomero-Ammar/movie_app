@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/Bloc/MovieDetails_bloc/movie_details_cubit.dart';
 import 'package:movie_app/constants/app_fonts.dart';
 import 'package:movie_app/models/movie/movie.dart';
@@ -43,12 +44,12 @@ class MovieDetailScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(20.0),
-                            bottom: Radius.circular(20.0)),
+                        borderRadius:  BorderRadius.vertical(
+                            top: Radius.circular(20.0.h),
+                            bottom: Radius.circular(20.0.h)),
                         child: Image.network(
                           'https://image.tmdb.org/t/p/w500${movie.backdropPath ?? 'No Image Available'}',
-                          height: 300,
+                          height: 300.h,
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),
@@ -80,7 +81,7 @@ class MovieDetailScreen extends StatelessWidget {
                     ),
                     if (movie.cast != null && movie.cast!.isNotEmpty)
                       SizedBox(
-                        height: 150,
+                        height: 150.h,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: movie.cast!.length,
@@ -97,7 +98,7 @@ class MovieDetailScreen extends StatelessWidget {
                                       'https://image.tmdb.org/t/p/w500${cast.profilePath.isNotEmpty ? cast.profilePath : 'default-profile.jpg'}',
                                     ),
                                   ),
-                                  const SizedBox(height: 8),
+                                   SizedBox(height: 8.h),
                                   Text(
                                     cast.name,
                                     style: AppFonts.textTheme.displaySmall,

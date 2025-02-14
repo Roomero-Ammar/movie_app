@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/core/utils/app_route.dart';
 import 'package:movie_app/core/utils/theme_provider.dart';
 import 'package:provider/provider.dart'; // استيراد Provider
 import 'network/service_locator.dart';
+
+
 
 void main() {
   setupLocator();
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(), // تسجيل المزود
-      child: MovieApp(appRouter: AppRouter()),
+      child: ScreenUtilInit(
+        designSize: const Size(360, 690), 
+        minTextAdapt: true,
+        child: MovieApp(appRouter: AppRouter()),
+      ),
     ),
   );
 }
+
 
 class MovieApp extends StatelessWidget {
   final AppRouter appRouter;

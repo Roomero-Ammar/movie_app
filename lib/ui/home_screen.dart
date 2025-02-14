@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/Bloc/movie_bloc/movie_cubit.dart';
 import 'package:movie_app/Bloc/person_bloc/person_cubit.dart';
 import 'package:movie_app/Bloc/genre_bloc/genre_cubit.dart';
@@ -51,7 +52,7 @@ class HomeScreen extends StatelessWidget {
       } else if (state is GenreLoaded) {
         final genres = state.genres;
         return SizedBox(
-          height: 50,
+          height: 50.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: genres.length,
@@ -126,7 +127,7 @@ class HomeScreen extends StatelessWidget {
                 },
                 child: Card(
                   elevation: 4,
-                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  margin:  EdgeInsets.symmetric(vertical: 8.0.w, horizontal: 4.0.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -139,7 +140,7 @@ class HomeScreen extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : const Icon(Icons.movie, size: 50, color: Colors.grey),
+                            :  Icon(Icons.movie, size: 50.sp, color: Colors.grey),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -151,11 +152,11 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                            padding:  EdgeInsets.symmetric(horizontal: 8.0.h, vertical: 4.0.w),
                             child: Text(
                               'Release: ${movie.releaseDate?.substring(0, 4) ?? 'Unknown'}',
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 color: Colors.grey[600],
                               ),
                             ),
@@ -203,7 +204,7 @@ class HomeScreen extends StatelessWidget {
     child: Row(
       children: people.map((person) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding:  EdgeInsets.symmetric(horizontal: 8.0.h),
           child: Column(
             children: [
               CircleAvatar(
@@ -216,12 +217,12 @@ class HomeScreen extends StatelessWidget {
                     ? const Icon(Icons.person, size: 35, color: Colors.white)
                     : null,
               ),
-              const SizedBox(height: 4),
+               SizedBox(height: 4.h),
               SizedBox(
-                width: 70, // Limit name width
+                width: 70.w, // Limit name width
                 child: Text(
                   person.name ?? 'Unknown',
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  style:  TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
